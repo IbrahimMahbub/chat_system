@@ -15,7 +15,7 @@ message_history = {}
 
 # Function to broadcast messages to clients in a specific channel
 def broadcast(message, channel, sender):
-    """Send a message to all clients in a channel except the sender and save the message in the history."""
+    #Send a message to all clients in a channel except the sender and save the message in the history
     if channel not in message_history:
         message_history[channel] = []
     message_history[channel].append(message)  # Save message to the channel's history
@@ -29,7 +29,7 @@ def broadcast(message, channel, sender):
 
 # Function to broadcast the updated list of active users to all clients
 def broadcast_active_users():
-    """Send the list of active users to all connected clients."""
+    #Send the list of active users to all connected clients
     active_users_list = "\nActive Users: " + ", ".join(clients.keys())
     for client in clients.values():
         try:
@@ -39,7 +39,7 @@ def broadcast_active_users():
 
 # Function to broadcast the updated list of active channels to all clients
 def broadcast_active_channels():
-    """Send the list of active channels to all connected clients."""
+    #Send the list of active channels to all connected clients
     active_channels_list = "\nActive Channels: " + ", ".join(active_channels)
     for client in clients.values():
         try:
@@ -49,12 +49,12 @@ def broadcast_active_channels():
 
 # Function to send instructions to the client
 def send_instructions(client_socket):
-    """Send the instructions to the client."""
+    #Send the instructions to the client.
     instructions = (
-        "\nWelcome to the chat system! Use the following commands:\n"
-        "/join <channel>  -  Join a new or existing channel.\n"
+        "\nTo use the service use the following commands:\n"
+        "/join <channel>  -  Join existing channel or add a new one, example: /join ChannelName .\n"
         "/exit  -  Exit the chat.\n"
-        "@<nickname> <message>  -  Send a private message to a user.\n"
+        "@<nickname> <message>  -  Send a private message to a user, example: @username Hello everyone .\n"
         "Type messages normally to send them to the active channel.\n"
         "You are currently in the 'general' channel.\n"
     )
@@ -128,7 +128,7 @@ def handle_client(client_socket, client_address):
 
             # Command to exit the chat
             if message == "/exit":
-                client_socket.send("You have exited the chat.".encode("utf-8"))
+                client_socket.send("You have exited the chat succesfully.".encode("utf-8"))
                 remove_client(nickname)
                 client_socket.close()
                 break
@@ -148,7 +148,7 @@ def remove_client(nickname):
     if nickname in clients:
         del clients[nickname]
         del channels[nickname]
-        print(f"{nickname} has disconnected.")
+        print(f"{nickname} has disconnected from the server.")
         # After removing the client, broadcast the updated list of active users
         broadcast_active_users()
 
